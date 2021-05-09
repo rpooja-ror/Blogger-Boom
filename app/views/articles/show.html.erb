@@ -1,0 +1,76 @@
+
+<section class="page-section portfolio" id="portfolio">
+  <div class="modal-body">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0"><%= @article.title %></h2>
+          <ul style="text-align: right">
+            <% if !current_user.is_commentor? && current_user.can_edit_destroy(@article.user_id) %>
+              <%= link_to 'Edit', edit_article_path(@article), class: "btn" %> |
+            <% end %>
+            <%= link_to 'Back', articles_path, class: "btn" %>
+          </ul>
+          <div class="divider-custom">
+              <div class="divider-custom-line"></div>
+              <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+              <div class="divider-custom-line"></div>
+          </div>
+
+          <% if notice.present? %>
+          <div class="alert alert-info">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <p id="notice"><%= notice %></p>
+          </div>
+          <% end %>
+
+          <% if @comment.present? && @comment.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+
+              <ul>
+                <% @comment.errors.each do |error| %>
+                  <li><%= error.full_message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <p class="mb-5"> <%= simple_format(json_escape @article.body) %> </p>
+          
+          <h2>Comments</h2>
+          <% if @article.comments.blank? %>
+            <div class="well-sm">
+              <%= "No Comments found." %>
+            </div>
+          <% else %>
+            <% @article.comments.each do |comment| %>
+              <% next if comment.id.blank? %>
+              <div class="well-sm">
+                <p>
+                  <strong><b><%= comment.name.titleize %></b></strong> Says on <%= comment.created_at.strftime("%d-%h-%y %H:%m") %><br/>
+                  <%= simple_format(json_escape comment.body.html_safe) -%><br/>
+                </p>
+              </div>
+            <% end %>
+          <% end %>
+          
+          <div class="well">
+            <h2>Add a comment:</h2>
+            <%= form_with model: [ @article, @article.comments.build ] do |form| %>
+              <p>
+                <%= form.label :commenter %><br>
+                <%= form.text_field :name, style: 'width:60%;' %>
+              </p>
+              <p>
+                <%= form.label :body %><br>
+                <%= form.text_area :body, rows: 4, style: 'width:60%;' %>
+              </p>
+              <p>
+                <%= form.submit %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+  </div>
+</section>

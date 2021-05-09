@@ -1,0 +1,56 @@
+<section class="page-section portfolio" id="portfolio">
+<div class="modal-body">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+        <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">
+        <% if article.id.present?%>
+          Edit Article
+        <% else %>
+          New Article
+        <% end %></h2>
+          <ul style="text-align: right">
+          <% if article.id.present?%>
+            <%= link_to 'Show', article, class: "btn" %> | 
+          <% end %>
+          <%= link_to 'Back', articles_path, class: "btn" %>
+          </ul>
+          <div class="divider-custom">
+              <div class="divider-custom-line"></div>
+              <div class="divider-custom-icon"><i class="fas fa-star"></i></div>
+              <div class="divider-custom-line"></div>
+          </div>
+<%= form_with(model: article) do |form| %>
+  <% if article.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h2>
+
+      <ul>
+        <% article.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :title %>
+    <%= form.text_field :title, style: 'width:80%;' %>
+  </div>
+
+  <div class="field">
+    <%= form.label :body %>
+    <%= form.text_area :body, rows: 10, style: 'width:80%;' %>
+  </div>
+
+  <div class="field">
+    <%= form.hidden_field :user_id, value: current_user.id %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+</div>
+      </div>
+  </div>
+  </section>
