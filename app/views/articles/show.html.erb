@@ -48,7 +48,7 @@
               <div class="well-sm">
                 <p>
                   <strong><b><%= comment.name.titleize %></b></strong> Says on <%= comment.created_at.strftime("%d-%h-%y %H:%m") %><br/>
-                  <%= simple_format(json_escape comment.body.html_safe) -%><br/>
+                  <%= simple_format(json_escape comment.body.try(&:html_safe)) -%><br/>
                 </p>
               </div>
             <% end %>

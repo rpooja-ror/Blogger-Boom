@@ -8,8 +8,13 @@ Mysql  Ver 8.0.23-0
 bundle install #installs the gem 
 rake db:create #Create the databases in the mysql
 rake db:migrate #add the tables and columns
+rake db:seed #to generate all the initializer data 
 rails s #to run the local server.
+
 
 #About Blogger Boom
 #In the era of computers, blogging has become popular as a source of information for readers and writers, which can create a feel of being in a community allowing you to share your thoughts and get feedback from people. Blogger Boom is created to share knowledge, where author can share the views on any subject. Users can read and comment on those topics. Author can also comment back to the user who posted. 
 
+#Admin login details
+#Email: admin@blogger.com
+#Password: Blogger123* (Reset the password once logged in to the application to prevent from hackers.)

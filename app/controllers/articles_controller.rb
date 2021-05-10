@@ -1,5 +1,10 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: %i[ show edit update destroy ]
+  before_action :check_role, only: %i[ edit update destroy ]
+
+  def check_role
+    redirect_to @article, notice: "Your not authorized user to perform this action."  if current_user.is_commentor?
+  end
 
   # GET /articles or /articles.json
   def index
@@ -50,11 +55,15 @@ class ArticlesController < ApplicationController
 
   # DELETE /articles/1 or /articles/1.json
   def destroy
-    Comment.where(article_id: @article.id).delete_all
-    @article.destroy
-    respond_to do |format|
-      format.html { redirect_to articles_url, notice: "Article was successfully destroyed." }
-      format.json { head :no_content }
+    if current_user.can_edit_destroy(@article.user_id)
+      Comment.where(article_id: @article.id).delete_all
+      @article.destroy
+      respond_to do |format|
+        format.html { redirect_to articles_url, notice: "Article was successfully destroyed." }
+        format.json { head :no_content }
+      end
+    else
+      redirect_to @article, notice: "Your not authorized user to perform this action."
     end
   end
 
